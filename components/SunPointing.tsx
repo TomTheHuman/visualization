@@ -2,7 +2,8 @@ import React, { Suspense, useEffect, useRef } from 'react';
 
 // External Imports
 import * as THREE from 'three';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 
 // Internal Imports
 
@@ -19,29 +20,34 @@ function Sphere(): React.ReactElement {
   );
 }
 
+function SkyBox(): React.ReactElement {
+  const texture = useLoader(THREE.TextureLoader, '/skybox.jpg');
+
+  return (
+    <mesh>
+      <sphereGeometry attach="geometry" args={[5000, 24, 24]} />
+      <meshBasicMaterial attach="material" map={texture} side={THREE.BackSide} />
+    </mesh>
+  )
+}
+
 export default function SunPointing(): React.ReactElement {
   return (
     <Suspense fallback={null}>
       <Canvas
         gl={{ antialias: true }}
         dpr={[1, 1.5]}
-        camera={{
-          position: [0, 0, 10], fov: 20, near: 0.01, far: 95,
-        }}
+        camera={{ fov: 50, near: 1, far: 10000 }}
       >
         {/* eslint-disable-next-line react/no-unknown-property */}
         <directionalLight
-          color="white"
-        // eslint-disable-next-line react/no-unknown-property
-          intensity={1.5}
-        // eslint-disable-next-line react/no-unknown-property
-          position={[5, 6, 10]}
+          position={[1000, 0, 2000]}
+          color={"0x404040"}
+          intensity={3}
         />
-        <ambientLight
-        // eslint-disable-next-line react/no-unknown-property
-          intensity={0.4}
-        />
+        <SkyBox />
         <Sphere />
+        <OrbitControls />
       </Canvas>
     </Suspense>
   );
