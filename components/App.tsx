@@ -6,8 +6,7 @@ import { Box, ThemeProvider } from '@mui/material';
 // Internal Imports
 import theme from 'styles/MuiTheme';
 import sx from '../styles/components/App.module.scss';
-import Header from './Header';
-import Landing from './Landing';
+import SunPointing from './SunPointing';
 
 /**
  * App component where core UI is configured
@@ -16,10 +15,9 @@ import Landing from './Landing';
 export default function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
-      <Box className={sx.root}>
-        <Header />
-        <Landing />
-      </Box>
+      <div className={sx.root}>
+        <SunPointing />
+      </div>
     </ThemeProvider>
 
   );

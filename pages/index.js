@@ -15,8 +15,8 @@ export default function Home() {
   return (
     <div className={sx.container}>
       <Head>
-        <title>Brown Bear Epoxy</title>
-        <meta name="description" content="Brown Bear Epoxy" />
+        <title>Visualization</title>
+        <meta name="description" content="TomTheHuman - Visualization" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <App />
