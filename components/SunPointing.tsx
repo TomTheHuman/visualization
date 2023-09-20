@@ -8,25 +8,45 @@ import { OrbitControls } from '@react-three/drei';
 // Internal Imports
 
 function Sphere(): React.ReactElement {
-  const sphereGeom = new THREE.SphereGeometry(1, 128, 128);
-  const ref = useRef<THREE.Mesh>(null);
+  const sphereGeom = new THREE.SphereGeometry(50, 100, 50);
+  const innerGeom = new THREE.SphereGeometry(49, 100, 50);
+  const ref = useRef<THREE.Points>(null);
 
   return (
     // eslint-disable-next-line react/no-unknown-property
-    <mesh ref={ref} geometry={sphereGeom}>
+    <points ref={ref} geometry={sphereGeom}>
       {/* eslint-disable-next-line react/no-unknown-property */}
-      <meshStandardMaterial color="blue" />
-    </mesh>
+      <pointsMaterial
+        color="#b8fdff"
+        size={1}
+        transparent
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+      <mesh geometry={innerGeom}>
+        <meshBasicMaterial
+          color="#b8fdff"
+          transparent={true}
+          opacity={0.25}
+        />
+      </mesh>
+    </points>
   );
 }
 
 function SkyBox(): React.ReactElement {
-  const texture = useLoader(THREE.TextureLoader, '/skybox.jpg');
+  const texture = useLoader(THREE.TextureLoader, '/skybox_high.jpg');
+  texture.colorSpace = THREE.SRGBColorSpace;
 
   return (
     <mesh>
       <sphereGeometry attach="geometry" args={[5000, 24, 24]} />
-      <meshBasicMaterial attach="material" map={texture} side={THREE.BackSide} />
+      <meshBasicMaterial
+        attach="material"
+        map={texture}
+        side={THREE.BackSide}
+
+      />
     </mesh>
   )
 }
@@ -37,7 +57,7 @@ export default function SunPointing(): React.ReactElement {
       <Canvas
         gl={{ antialias: true }}
         dpr={[1, 1.5]}
-        camera={{ fov: 50, near: 1, far: 10000 }}
+        camera={{ position: [0, 0, 150], fov: 50, near: 1, far: 10000 }}
       >
         {/* eslint-disable-next-line react/no-unknown-property */}
         <directionalLight
@@ -47,7 +67,11 @@ export default function SunPointing(): React.ReactElement {
         />
         <SkyBox />
         <Sphere />
-        <OrbitControls />
+        <OrbitControls
+          enableRotate
+          enablePan={false}
+          enableZoom={false}
+        />
       </Canvas>
     </Suspense>
   );
